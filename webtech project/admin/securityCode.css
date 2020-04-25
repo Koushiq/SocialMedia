@@ -1,0 +1,17 @@
+.security_code_tab
+{
+    height: 400px;
+    width: 400px;
+    top:50%;
+    left: 50%;
+    position: absolute;
+    transform: translate(-50%,-50%);
+    border: 1px solid transparent;
+    border-radius: 15px ;
+    background-color: rgb(0, 0, 0);
+}
+.security_code_input input
+{
+    text-align: center;
+    width: 250px;
+}

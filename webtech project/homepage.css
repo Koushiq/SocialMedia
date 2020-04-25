@@ -1,0 +1,281 @@
+#col-1
+{
+    width: 15%;
+    background-color: rgba(212, 209, 209, 0.705);
+    border-right: 0.001rem solid;
+}
+
+#col-2
+{
+    left: 15%;
+    width: 70%;
+    background-color: rgba(212, 209, 209, 0.705);
+    overflow-y: scroll;
+}
+
+#col-3
+{
+    border-left: 0.001rem solid;
+    left: 85%;
+    width: 15%;
+    background-color: rgba(212, 209, 209, 0.705);   
+}
+
+#site_name
+{
+    margin-left: 8px;
+    margin-right: 5px;
+    margin-top: 3px;
+}
+
+.logo img
+{
+    width: 40px;
+    height: 38px;
+    border: 1px solid transparent;
+    border-radius: 100%;
+    object-fit: cover;
+}
+.chat_box
+{
+    display: flex;
+    margin-bottom: 6px;
+    margin-left: 5px;
+    margin-top: 2px;
+}
+p
+{
+    margin-left: 10px;
+    margin-top: 10px;
+}
+#chat_head_panel
+{
+   width: 200px;
+}
+.active_now
+{
+    height: 10px;
+    width: 10px;
+    background-color: forestgreen;
+    border: 1px solid transparent;
+    border-radius: 100px;
+    margin-top: 15px;
+    margin-right: 25px;
+}
+.not_now
+{
+    height: 10px;
+    width: 10px;
+    margin-top: 15px;
+    margin-left: 260px;
+    background-color: rgba(209, 1, 36, 0.89);
+    border: 1px solid transparent;
+    border-radius: 100%;
+    position: fixed;
+}
+
+
+#txtArea
+{
+    margin-top: 10px;
+    margin-left: 375px;
+    height: 200px;
+    width: 600px;
+    background-color: rgb(255, 255, 255);
+    border: 1px solid transparent;
+    border-radius: 4px;
+    position: static;
+}
+
+.btn_container input
+{
+    font-size: 14px;
+    padding-top:10px;
+    padding-bottom: 10px;
+    padding-left: 20px;
+    padding-right: 20px ;
+    border: 1px solid transparent;
+    border-radius: 8px;
+    background-color: rgb(0, 0, 0);
+}
+
+#post_type
+{
+    list-style: none;
+    margin-left: 375px;
+    width: 200px;
+}
+
+#post_type li
+{
+    display: inline-block;
+    position: static;
+    margin-bottom: 10px;
+}
+
+.post
+{
+    padding-bottom: 10px;
+    
+}
+#post-status 
+{
+    width: 600px;
+    margin-left: 7px;
+   
+}
+#post-btn
+{
+    width: 1345px;
+}
+
+.news_feed_post
+{
+    margin-top: 20px;
+    width: 600px;
+    height: auto;
+    margin-left: 375px;
+    background-color: rgb(255, 255, 255);
+    border: 1px solid transparent;
+    border-radius: 5px;
+    
+}
+.post_img
+{
+    padding-top: 15px;
+    padding-left: 15px;
+    padding-bottom: 5px;
+    width: 95%;
+}
+.extra_space
+{
+    padding-top: 50px;
+}
+#poster_pic img
+{
+    margin-left: 3px;
+    margin-top: 10px;
+}
+.like_comment_btn
+{
+    background-color: white;
+    /* margin-left: 375px; */
+    margin-right: 130px;
+    margin-top: 5px;
+    margin-bottom: 20px;
+    padding-right: 15px;
+    border: 1px solid transparent;
+    border-radius: 5px;
+}
+
+.like_comment_btn a
+{
+    display: flex;
+}
+
+.like_comment_img img
+{
+    height: 35px;
+    width: 45px;
+    margin-top: 3px;
+}
+.like_comment_btn p
+{
+    margin-top: 14px;
+}
+.like_comment_section
+{
+    width: 603px;
+    margin-left: 375px;
+    margin-top: 10px;
+    display: inline-flex;
+    height: auto;
+    border: 1px solid transparent;
+    border-radius: 5px;
+}
+#comment_pic img
+{
+    margin-top: 7px;
+    margin-left: 6px;
+    width: 40px;
+}
+.like_count
+{
+    margin-left: 5px;
+}
+#load_comment_section
+{
+    margin-left: 379px;
+}
+#load_comment_section img
+{
+    margin-top: 12px;
+}
+
+#load_comment_section p
+{
+    width: 500px;
+    height: auto;
+   padding: 10px;
+   background-color: white;
+   border: 1px solid transparent;
+   border-radius: 5px;
+   
+}
+.write_comment
+{
+    display: flex;
+    margin-left: 390px;
+}
+.write_comment img
+{
+    margin-top: 3px;
+    margin-right: 10px;
+}
+.write_comment input
+{
+    width: 495px;
+    height: auto;
+    background-color: white;
+    border-radius: 15px;
+
+}
+
+#top
+{
+    background-color: rgb(30, 157, 241);
+    margin-bottom: 0;
+}
+.top_search input
+{
+    width: 470px;
+}
+.top_nav_pic img
+{
+    width: 37px;
+    border: none;
+    border-radius: 0%;    
+}
+.top_nav
+{
+    list-style:none;
+    display: flex;
+    margin-left: 645px;
+}
+.top_nav li
+{
+    margin-left: 20px;
+}
+.first_element a
+{
+    margin-left: 180px;
+}
+#item_upper_space
+{
+    margin-top: 11px;
+}
+#item_upper_space img
+{
+    width: 36px;
+    margin-top: -5px;
+}

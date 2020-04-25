@@ -1,0 +1,55 @@
+html
+{
+    background-image: url(imgs/background.jpg);
+    height: 100%; 
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+
+.login_box
+{
+    color: white;
+    transition: 0.75s;
+    width: 400px;
+    height: 500px;
+    background: rgba(10, 10, 10, 0.795);
+    border: 1px solid transparent;
+    border-radius: 10px; 
+    top: 50%;
+    left: 50%;
+    position: absolute;
+    transform: translate(-50%,-50%);
+    box-sizing: border-box;
+}
+.form-input input
+{
+    width: 280px;
+}
+.form_box
+{
+    top: 50%;
+    left: 50%;
+    position: absolute;
+    transform: translate(-50%,-45%);
+}
+
+.login_box:hover
+{
+    transition: 0.75s;
+    background: rgb(0, 0, 0);
+}
+
+.btn input
+{
+    transition: 0.5s;
+}
+
+.btn input:hover
+{
+    transition: 0.5s;
+    background-color: rgba(73, 189, 27, 0.897);
+}
+
+
