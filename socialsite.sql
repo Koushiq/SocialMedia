@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.0.1
+-- version 4.9.0.1
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 19, 2020 at 09:02 AM
--- Server version: 10.4.11-MariaDB
--- PHP Version: 7.4.3
+-- Generation Time: Aug 26, 2020 at 06:19 AM
+-- Server version: 10.3.16-MariaDB
+-- PHP Version: 7.1.30
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -65,10 +65,7 @@ CREATE TABLE `admininfo` (
 --
 
 INSERT INTO `admininfo` (`username`, `password`) VALUES
-('admin1', '1234'),
-('fardin', '1234'),
-('fardin123', '1234'),
-('prodipta', '1234'),
+('fifa1234', '1234'),
 ('root', '1234');
 
 -- --------------------------------------------------------
@@ -97,7 +94,8 @@ CREATE TABLE `friend` (
 INSERT INTO `friend` (`friendId`, `username`, `receivername`, `usernameFirstName`, `usernameLastName`, `receivernameFirstName`, `receivernameLastName`, `usernamePropic`, `receivernamePropic`, `status`) VALUES
 (31, 'admin', 'prodipta', 'Forda', 'William', 'Joyce', 'Prodipta', 'propic/admin-23.jpg', 'propic/prodipta-34.jpg', 'accepted'),
 (33, 'Batman', 'prodipta', 'Bruce', 'Wayne', 'Joyce', 'Prodipta', 'propic/Batman-39.jpg', 'propic/prodipta-34.jpg', 'accepted'),
-(39, 'admin', 'Batman', 'Forda', 'William', 'Bruce', 'Wayne', 'propic/admin-23.jpg', 'propic/Batman-39.jpg', 'accepted');
+(39, 'admin', 'Batman', 'Forda', 'William', 'Bruce', 'Wayne', 'propic/admin-23.jpg', 'propic/Batman-39.jpg', 'accepted'),
+(43, 'Batman', 'afif1234', 'Bruce', 'Wayne', 'Afif', 'Rahman', 'propic/Batman-39.jpg', 'propic/afif1234.jpg', 'accepted');
 
 -- --------------------------------------------------------
 
@@ -139,7 +137,11 @@ INSERT INTO `message` (`messageId`, `content`, `messageType`, `senderUsername`, 
 (164, 'lalalalala', 'text', 'prodipta', 'admin', '2020-05-19 07:08:56'),
 (165, 'asdasdasd', 'text', 'prodipta', 'admin', '2020-05-19 07:09:03'),
 (166, 'messagePics/166.jpg', 'path', 'admin', 'prodipta', '2020-05-19 07:09:21'),
-(167, 'messagePics/167.jpg', 'path', 'prodipta', 'admin', '2020-05-19 07:09:32');
+(167, 'messagePics/167.jpg', 'path', 'prodipta', 'admin', '2020-05-19 07:09:32'),
+(168, 'asdasdas', 'text', 'Batman', 'prodipta', '2020-08-26 05:49:53'),
+(169, 'messagePics/169.jpg', 'path', 'Batman', 'prodipta', '2020-08-26 05:49:59'),
+(170, 'hi bruci', 'text', 'afif1234', 'Batman', '2020-08-26 05:51:40'),
+(171, 'hello babe', 'text', 'Batman', 'afif1234', '2020-08-26 05:51:56');
 
 -- --------------------------------------------------------
 
@@ -256,7 +258,52 @@ INSERT INTO `postlike` (`id`, `postId`, `likedBy`) VALUES
 (21, 15, 'admin'),
 (22, 16, 'admin'),
 (23, 7, 'admin'),
-(24, 19, 'prodipta');
+(24, 19, 'prodipta'),
+(25, 14, 'Batman');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `usercommentpermission`
+--
+
+CREATE TABLE `usercommentpermission` (
+  `username` varchar(30) NOT NULL,
+  `c` varchar(15) NOT NULL,
+  `r` varchar(15) NOT NULL,
+  `u` varchar(15) NOT NULL,
+  `d` varchar(15) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `usercommentpermission`
+--
+
+INSERT INTO `usercommentpermission` (`username`, `c`, `r`, `u`, `d`) VALUES
+('fifa1234', 'true', 'true', 'true', 'true'),
+('root', 'true', 'true', 'true', 'true');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `userdatapermission`
+--
+
+CREATE TABLE `userdatapermission` (
+  `username` varchar(30) NOT NULL,
+  `c` varchar(15) NOT NULL,
+  `r` varchar(15) NOT NULL,
+  `u` varchar(15) NOT NULL,
+  `d` varchar(15) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `userdatapermission`
+--
+
+INSERT INTO `userdatapermission` (`username`, `c`, `r`, `u`, `d`) VALUES
+('fifa1234', 'true', 'true', 'true', 'true'),
+('root', 'true', 'true', 'true', 'true');
 
 -- --------------------------------------------------------
 
@@ -285,6 +332,94 @@ INSERT INTO `userinfo` (`username`, `firstName`, `lastName`, `password`, `dateOf
 ('koushiq', 'Mushfiqur', 'Rahman', '1234', '1996-06-10', 'titanic', 'male'),
 ('koushiq1234', 'Mushfiqur', 'Rahman', '1234', '1996-06-10', 'Harry Potter', 'male'),
 ('prodipta', 'Joyce', 'Prodipta', '1234', '1996-01-01', 'Hobbit', 'female');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `userlikepermission`
+--
+
+CREATE TABLE `userlikepermission` (
+  `username` varchar(30) NOT NULL,
+  `c` varchar(15) NOT NULL,
+  `r` varchar(15) NOT NULL,
+  `u` varchar(15) NOT NULL,
+  `d` varchar(15) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `userlikepermission`
+--
+
+INSERT INTO `userlikepermission` (`username`, `c`, `r`, `u`, `d`) VALUES
+('fifa1234', 'true', 'true', 'true', 'true'),
+('root', 'true', 'true', 'true', 'true');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `usermessagepermission`
+--
+
+CREATE TABLE `usermessagepermission` (
+  `username` varchar(30) NOT NULL,
+  `c` varchar(15) NOT NULL,
+  `r` varchar(15) NOT NULL,
+  `u` varchar(15) NOT NULL,
+  `d` varchar(15) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `usermessagepermission`
+--
+
+INSERT INTO `usermessagepermission` (`username`, `c`, `r`, `u`, `d`) VALUES
+('fifa1234', 'true', 'true', 'true', 'true'),
+('root', 'true', 'true', 'true', 'true');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `userphotopermission`
+--
+
+CREATE TABLE `userphotopermission` (
+  `username` varchar(30) NOT NULL,
+  `c` varchar(15) NOT NULL,
+  `r` varchar(15) NOT NULL,
+  `u` varchar(15) NOT NULL,
+  `d` varchar(15) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `userphotopermission`
+--
+
+INSERT INTO `userphotopermission` (`username`, `c`, `r`, `u`, `d`) VALUES
+('fifa1234', 'true', 'true', 'true', 'true'),
+('root', 'true', 'true', 'true', 'true');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `userpostpermission`
+--
+
+CREATE TABLE `userpostpermission` (
+  `username` varchar(30) NOT NULL,
+  `c` varchar(15) NOT NULL,
+  `r` varchar(15) NOT NULL,
+  `u` varchar(15) NOT NULL,
+  `d` varchar(15) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `userpostpermission`
+--
+
+INSERT INTO `userpostpermission` (`username`, `c`, `r`, `u`, `d`) VALUES
+('fifa1234', 'true', 'true', 'true', 'true'),
+('root', 'true', 'true', 'true', 'true');
 
 --
 -- Indexes for dumped tables
@@ -339,9 +474,45 @@ ALTER TABLE `postlike`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `usercommentpermission`
+--
+ALTER TABLE `usercommentpermission`
+  ADD PRIMARY KEY (`username`);
+
+--
+-- Indexes for table `userdatapermission`
+--
+ALTER TABLE `userdatapermission`
+  ADD PRIMARY KEY (`username`);
+
+--
 -- Indexes for table `userinfo`
 --
 ALTER TABLE `userinfo`
+  ADD PRIMARY KEY (`username`);
+
+--
+-- Indexes for table `userlikepermission`
+--
+ALTER TABLE `userlikepermission`
+  ADD PRIMARY KEY (`username`);
+
+--
+-- Indexes for table `usermessagepermission`
+--
+ALTER TABLE `usermessagepermission`
+  ADD PRIMARY KEY (`username`);
+
+--
+-- Indexes for table `userphotopermission`
+--
+ALTER TABLE `userphotopermission`
+  ADD PRIMARY KEY (`username`);
+
+--
+-- Indexes for table `userpostpermission`
+--
+ALTER TABLE `userpostpermission`
   ADD PRIMARY KEY (`username`);
 
 --
@@ -352,13 +523,13 @@ ALTER TABLE `userinfo`
 -- AUTO_INCREMENT for table `friend`
 --
 ALTER TABLE `friend`
-  MODIFY `friendId` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=43;
+  MODIFY `friendId` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=44;
 
 --
 -- AUTO_INCREMENT for table `message`
 --
 ALTER TABLE `message`
-  MODIFY `messageId` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=168;
+  MODIFY `messageId` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=172;
 
 --
 -- AUTO_INCREMENT for table `photos`
@@ -382,7 +553,7 @@ ALTER TABLE `postcomment`
 -- AUTO_INCREMENT for table `postlike`
 --
 ALTER TABLE `postlike`
-  MODIFY `id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
+  MODIFY `id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
