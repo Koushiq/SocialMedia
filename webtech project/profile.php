@@ -1,4 +1,19 @@
 <?php
+    $conn = new mysqli("localhost", "root", "", "socialsite");
+    function getPhotoId()
+    {
+        global $conn;
+        $photoQuery="select * from photos order by photoid desc";
+        $resultPhoto=$conn->query($photoQuery);
+        $rowPhoto=$resultPhoto->fetch_assoc();
+        $photoId=1;
+        if($resultPhoto->num_rows>0)
+        {
+            $photoId=$rowPhoto['photoId'];
+            $photoId++;
+        }
+        return $photoId;
+    }
     session_start();
     if(!isset($_SESSION['username']))
     {
@@ -8,52 +23,49 @@
     $username=$_SESSION['username'];
     $content="";
     $picture="";
-    $conn = new mysqli("localhost", "root", "", "socialsite");
+   // $conn = new mysqli("localhost", "root", "", "socialsite");
     $sqlUserinfo = "select * from userinfo where username = '".$username."'";
     $sqlAbout = "select * from about where username = '".$username."'";
     $sqlPost="select postid from post order by postid desc";
-
     $resultUserinfo= $conn->query($sqlUserinfo);
     $rowUserinfo=$resultUserinfo->fetch_assoc();
-    
     $resultAbout= $conn->query($sqlAbout);
     $rowAbout=$resultAbout->fetch_assoc();
-
     $resultPost=$conn->query($sqlPost);
     $rowPost=$resultPost->fetch_assoc();
-
     $postid=0;
-
-
     $postStsErr="what's on your mind ?";
 
     if(isset($_POST['poststs']))
     {
         if(!empty($_POST['content']) && !empty($_FILES['picture']['name']))
         {
-            $content=htmlspecialchars($_POST['content']);
-            if($resultPost->num_rows>0)
+            $ext = pathinfo($_FILES['picture']['name'], PATHINFO_EXTENSION);
+            if($ext=="jpg" || $ext=="PNG" || $ext=="gif"  || $ext=="tiff"  || $ext=="BMP")
             {
-                $postid=$rowPost['postid'];
-                $postid++;
+                $content=htmlspecialchars($_POST['content']);
+                $picture='postpic/'.$username."-".getPhotoId().'.jpg';
+                $sqlInsertToPhotos="insert into photos (username,path,type) values ('".$username."','".$picture."','postpic')";
+                $conn->query($sqlInsertToPhotos) or die($conn->error);
+                $handle = $_FILES["picture"]["tmp_name"];
+                $insertQuery = "insert into post (username,content,picture) values ('".$username."', '".$content."' , '".$picture."' ) ; "; 
+                $conn->query($insertQuery) or die($conn->error);
+                copy($handle, $picture);
+                header("location:profile.php");
             }
-
-            $picture='postpic/'.$username.$postid.'.jpg';
-            $handle = $_FILES["picture"]["tmp_name"];
-            $insertQuery = "insert into post ( postid,username,content,picture,likecount) values ( '".$postid."' , '".$username."', '".$content."' , '".$picture."' , '0' ) ; "; 
-            $conn->query($insertQuery) or die($conn->error);
-            copy($handle, $picture);
-            header("location:profile.php");
+            else
+            {
+                $postStsErr="Wrong file format";
+            }
         }
         else
         {
             $postStsErr="Both fields can't be empty at least one field needs to have data!";
         }
     }
+    
+    
 ?>
-
-
-
 
 <!DOCTYPE html>
 <html>
@@ -63,35 +75,12 @@
         <link rel="stylesheet" type="text/css" href="profile.css">
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-
     </head>
 
     <body>
-        <div class="form-input" id="top">
-            <uL class="top_nav">
-                <li class="top_search">
-                    <input type="search" placeholder="Search">
-                </li>
-                <li class="first_element" id="item_upper_space">
-                    <a href="profile.php" class="text_angel">Profile</a>
-                </li>
-                <li id="item_upper_space">
-                    <a href="homepage.php" class="text_angel">Home</a>
-                </li>
-                <li class="logo top_nav_pic" id="item_upper_space">
-                    <a href="#" ><img src="friendRequest.png"></a>
-                </li>
-                <li class="logo top_nav_pic" id="item_upper_space">
-                        <a href="#"><img src="message.png"></a>
-                </li>
-                <li class="logo top_nav_pic" id="item_upper_space">
-                    <a href="#"><img src="notification.png"></a>
-                </li>
-                <li class="logo top_nav_pic" id="item_upper_space">
-                    <a href="logout.php"><img src="logout.png"></a>
-                </li>
-            </uL>
-       </div>
+       <?php
+             include 'headerfile.php';
+       ?>
 
     <div class="column center_align" id="col-1">
                
@@ -104,23 +93,9 @@
             <img src="<?php echo $rowAbout['propic']; ?>" class="pro_pic">
             <h1 class="text_angel big_font" id="user_name"> <b> <?php echo $username ?> </b> </h1>
         </div>
-        <div class="profile_btns">
-             <ul>
-                 <li>
-                     <a href="about.php"><p class="med_font text_primary">About</p></a>
-                 </li>
-                 <li>
-                    <a href="profile.php"><p class="med_font text_primary">Profile</p></a>
-                </li>
-                 <li>
-                    <a href="#"><p class="med_font text_primary">Friends</p></a>
-                </li>
-                <li>
-                    <a href="#"><p class="med_font text_primary">Photos</p></a>
-                </li>
-             </ul>
-        </div>
-
+        <?php
+            include("loadProfileBtns.php");
+        ?>
         <div class="post">
            <form method="post" action="" enctype="multipart/form-data">
                 <textarea id="txtArea" class="med_font" name="content"  placeholder="<?php echo $postStsErr; ?>" style="resize:none;"></textarea>
@@ -135,23 +110,25 @@
            </form>
        </div>
 
-
         <?php
-               $resultPostRender=$conn->query("select * from post where username = '".$username."' ;") or die("nooo");
+               $resultPostRender=$conn->query("select * from post where username = '".$username."' order by postid desc ;") or die("nooo");
                 if ($resultPostRender->num_rows > 0)
                 {
                     while($rowPostRender = $resultPostRender->fetch_assoc()) 
                     {
                         $propic =  $rowAbout['propic'];
                         $firstname = $rowUserinfo['firstName'];
+                        $lastname=$rowUserinfo['lastName'];
                         $content = $rowPostRender['content'];
                         $picture = $rowPostRender['picture'];
-                        $likecount = $rowPostRender['likecount'];
+                        $res=$conn->query("select * from postlike where postId= '".$rowPostRender['postid']."' ");
+                        $likeCount=$res->num_rows;
+                        //$likecount = $rowPostRender['likecount'];
                         echo '<div class="news_feed_post">
                             <div class="logo chat_box" id="poster_pic">
                                 <img src="'.$propic.'">
                                     <a href="#" class="text_primary">
-                                        <p class="med_font" id="poster_name">  '.$firstname.'  </p>   
+                                        <p class="med_font" id="poster_name">  '.$firstname.' '.$lastname.' </p>   
                                     </a> 
                             </div>
                                 <!--feedcontent-->
@@ -160,14 +137,14 @@
                                 <!--feed image-->
                             <img src="'.$picture.'" class="post_img">
                             <div class="like_count">
-                                <p> '.$likecount.' Likes </p>
+                                <a href="#" onclick="setPostId('.$rowPostRender['postid'].');loadLikes();" style="color:black;"><p> '.$likeCount.' Likes </p></a>
                             </div>
                         </div>
 
                         <div class="like_comment_section">
 
                         <div class="like_comment_btn">
-                              <a href="#" class="text_primary">
+                              <a href="#" class="text_primary" onclick="getPostIdByLike('.$rowPostRender['postid'].')">
                                   <i class="like_comment_img logo"> 
                                       <img src="like.png">
                                   </i>
@@ -188,82 +165,142 @@
                             </a>
                          </div>
                     </div>
-            
+                    
                     <div class="comment">
-                        <div class="load_comments">
-                             <ul>
-                                 <li class="write_comment logo" id="load_comment_section">
-                                     <img src="2.jpg">
-                                     <p>Wow nice picture</p>
-                                 </li>
-                                 <li class="write_comment logo" id="load_comment_section">
-                                     <img src="3.jpg">
-                                     <p>Damn! Cool picture</p>
-                                 </li>
-                             </ul>
+                            <div class="load_comments">
+                                <ul>';
+                        // select comment
+                        $sqlComment="select * from postComment where postId='".$rowPostRender['postid']."';";
+                        $resComment=$conn->query($sqlComment);
+                        if($resComment->num_rows>0)
+                        {
+                            while($rowComment=$resComment->fetch_assoc())
+                            {
+                                $sqlCommenterInfo="select userinfo.username,userinfo.firstName,userinfo.lastName,about.propic from userinfo inner join about on userinfo.username=about.username where userinfo.username='".$rowComment['commentBy']."' ";
+                                $resCommentInfo=$conn->query($sqlCommenterInfo);
+                                $rowCommentInfo=$resCommentInfo->fetch_assoc();
+                                echo '<li class="write_comment logo" id="load_comment_section">
+                                            <img src="'.$rowCommentInfo['propic'].'">
+                                            <p><a style="color:black; font-weight:600;font-size:18px;" href="viewProfile.php?username='.$rowCommentInfo['username'].'">'.$rowCommentInfo['firstName']." ".$rowCommentInfo['lastName'].'</a><br>'.$rowComment['commentContent'].'</p>
+                                    </li>';
+                            }
+                        }
+                        echo '</ul>
                         </div>
-            
-                         <div class="form-input">
-                             <div class="write_comment logo">
-                                 <img src="1.jpg">
-                                 <input type="text" placeholder="add a comment..">
-                             </div>
-                         </div>
-            
-                    </div>'
-                        ;
+                        <div class="form-input">
+                            <div class="write_comment logo">
+                                <img src="'.$propic.'">
+                                <input type="text"  onkeypress="setPostId('.$rowPostRender['postid'].')" placeholder="add a comment.." class="input_comment">
+                            </div>
+                        </div>
+                      </div>';
                     }
                 }
         ?>
+        <div id="likes_list_panel" onclick="hideLikeList()">
 
+        </div>
         <div class="extra_space">
-            
         </div>
     </div>
 
-
-
     <div class="column" id="col-3">
-        <ul>
-            <li class="logo chat_box" >
-                <img src="1.jpg">
-                <a href="#" class="text_dark">
-                    <p>Carlos</p>   
-                </a> 
-                <span class="active_now al"></span>
-            </li>
-            <li class="logo chat_box" >
-                <img src="2.jpg">
-                <a href="#" class="text_dark">
-                    <p>Nicolas</p>
-                </a>
-                <span class="active_now"></span>
-            </li>
-            <li class="logo chat_box" >
-                <img src="3.jpg">
-                <a href="#" class="text_dark">
-                    <p>Leoid</p>
-                </a> 
-                <span class="active_now"></span>
-            </li>
-            <li class="logo chat_box" >
-                <img src="4.jpg">
-                <a href="#" class="text_dark">
-                    <p>Alex</p>
-                </a> 
-                <span class="active_now"></span>
-            </li>
-            <li class="logo chat_box" >
-                <img src="6.jpg">
-                <a href="#" class="text_dark">
-                    <p>Maria</p>
-                </a>
-                <span class="not_now"></span>
-            </li>
-        </ul>
+        <?php 
+            include("loadChatList.php");
+        ?>
     </div>
-
-
-
     </body>
 </html>
+<script>
+   /*  */
+    var PostId;
+    var CommentBy="<?php echo $_SESSION['username']; ?>";
+    function setPostId(postId)
+    {
+        PostId=postId;
+    }
+    function getPostId()
+    {
+        return PostId;
+    }
+
+    function insertComment(comment)
+    {
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function()
+        {
+            if (this.readyState == 4 && this.status == 200)
+            {
+                document.getElementsByClassName("input_comment").innerHTML = this.responseText;
+            }
+        };
+        xhttp.open("GET", "insertComment.php?comment="+comment+"&postid="+PostId+"&commentBy="+CommentBy, true);
+        xhttp.send();
+    } 
+    function bindComment()
+    {
+        var elements =document.getElementsByClassName("input_comment");
+        var myFunction = function(event) {
+            var char = event.which || event.keyCode;
+            if(char==13 && this.value!="")
+            {
+                insertComment(this.value);
+                this.value="";
+            }
+        };
+        for (var i = 0; i < elements.length; i++) {
+            elements[i].addEventListener('keyup', myFunction, false);
+        }
+    }
+    setTimeout(bindComment, 50);
+
+
+    function getPostIdByLike(postId)
+    {
+        var xhttp = new XMLHttpRequest();
+        xhttp.open("GET", "insertLike.php?postId="+postId+"&likedBy="+CommentBy, true);
+        xhttp.send();
+    }
+    function loadLikeList(elem)
+    {
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function()
+        {
+            if (this.readyState == 4 && this.status == 200)
+            {
+                elem.innerHTML = this.responseText;
+            }
+        };
+        xhttp.open("GET", "loadLikes.php?&postid="+PostId, true);
+        xhttp.send();
+    }
+    function loadLikes()
+    {
+       /*  var elem=document.getElementById("load_likes");
+        elem.classList.toggle("likes_list_panel"); */
+        var elem=document.getElementById("likes_list_panel");
+        if(elem.style.display=="block")
+        {
+            elem.style.display="none";
+        }
+        else
+        {
+            elem.style.display="block";
+        }
+        loadLikeList(elem);
+
+    }
+    function redirectToMessenger(username)
+    {
+        console.log(username);
+        window.location.replace("messenger.php?username="+username);
+    }
+    function hideLikeList()
+    {
+        var elem=document.getElementById("likes_list_panel");
+        if(elem.style.display=="block")
+        {
+            elem.style.display="none";
+        }
+    }
+</script>

@@ -1,0 +1,75 @@
+.show
+{
+    position: relative;
+    width: 400px;
+    height: 400px;
+    margin-top: 20px;
+    margin-left: 25px;
+    display: inline-table;
+    background-color: rgb(71, 73, 82);
+    transition: 0.3s;
+    border: 1px solid transparent;
+    border-radius: 5px;
+    object-fit: contain;
+   
+}
+
+.show:hover
+{
+    background-color: rgb(44, 45, 48);
+}
+.show img
+{
+    max-width: 350px;
+    margin-left: 20px;
+    position: relative;
+}
+.Photos img
+{
+    max-width: 310px;
+}
+
+#col-2
+{
+    width: 85%;
+    position: relative;
+    height: 100%;
+    overflow-y: scroll;
+    overflow-x: hidden;
+}
+
+.selectMenu input
+{
+    padding: 20px;
+    transition: 0.3s;
+    background: rgb(53, 179, 211);
+    box-shadow: inset 2px 0px 25px 0px rgb(33, 120, 179);
+}
+.selectMenu
+{
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%,-50%);
+  position: absolute;
+  
+}
+.wrapper_btns
+{
+   margin-top: 2%;
+}
+.selectMenu input:hover
+{
+    padding: 35px;
+    font-size: large;
+    background: rgb(35, 144, 216);
+    box-shadow: inset 2px 0px 75px 0px rgb(6, 30, 58);
+}
+
+.show img
+{
+    width: 100%;
+    height: 100%;
+    border: 1px solid transparent;
+    border-radius: 5px;
+    object-fit: contain;
+}

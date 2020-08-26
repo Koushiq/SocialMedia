@@ -1,0 +1,129 @@
+#display_username h1
+{
+    text-align: center;
+}
+
+.section-1
+{
+    position: absolute;
+    height: 100%;
+    left: 0;
+    width: 24%;
+    text-align: center;
+    
+}
+
+.section-2
+{
+    position: absolute;
+    height: 100%;
+    left: 24%;
+    width: 24%;
+    text-align: center;
+}
+.section-3
+{
+    position: absolute;
+    height: 100%;
+    left: 48%;
+    width: 24%;
+    text-align: center;
+}
+.section-4
+{
+    position: absolute;
+    height: 100%;
+    left: 72%;
+    width: 24%;
+    text-align: center;
+}
+
+.vl-1
+{
+    top: 10%;
+    position: absolute;
+    border-left: 2px solid white;
+    height: 75%;
+    left: 24%;
+    
+}
+.vl-2
+{
+    top: 10%;
+    position: absolute;
+    border-left: 2px solid white;
+    height: 75%;
+    left: 48%;
+    
+}
+.vl-3
+{
+    top: 10%;
+    position: absolute;
+    border-left: 2px solid white;
+    height: 75%;
+    left: 72%;
+}
+.stat_container
+{
+    position: relative;
+    width: 90%;
+    background-color: rgb(32, 33, 37);
+    border: 5px solid transparent;
+    border-radius: 25px;
+    margin-left: 2%;
+    height: 150px;
+}
+.panel
+{
+    position: relative;
+    margin-top: 50px;
+    width: 90%;
+    height: 50%;
+    background-color: rgb(32, 33, 37);
+    margin-left: 2%;
+    border: 5px solid transparent;
+    border-radius: 25px;
+
+}
+
+.push_down
+{
+    position: absolute;
+    top: 30%;
+    transform: translate(0%,-10%);
+}
+.col-2
+{
+    overflow-y: scroll;
+}
+.adminBtn
+{
+    border: 1px solid transparent;
+    border-radius: 10px;
+}
+.btn_signup input
+{
+    font-weight: bold;
+    background-color: rgb(154, 48, 174);
+    color: white;
+    transition: 0.3s;
+}
+.update_window_panel
+{
+    position:absolute;
+    height: auto;
+    background-color: grey;
+    transform: translate(-50%,-50%);
+    top: 50%;
+    left: 50%;
+}
+select
+{
+   padding: 10px;
+  
+}
+option
+{
+    padding: 10px 0;
+}

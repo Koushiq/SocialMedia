@@ -94,10 +94,10 @@
                 <div class="btn btn_danger center_align">
                     <input type="submit" value="Login" name="login">
                 </div>
-                <div class="center_align">
+               <!--  <div class="center_align">
                    <p> <a class="text_danger" href="#">Forgot Password? </a></p>
                 </div>
-
+ -->
                 <div class="center_align">
                     <p>Don't have an account ?</p>
                          <p><a class="text_success" href="signup.php">Sign up Here </a>

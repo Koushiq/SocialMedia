@@ -47,21 +47,14 @@ h5
     font-size: 1.25rem;
     font-weight: 300;
 }
-
 h6
 {
     font-size: 1rem;
     font-weight: 200;
 }
-
-a
+a,u
 {
     text-decoration: none;
-}
-
-a:hover
-{
-    text-decoration: underline;
 }
 
 label
@@ -69,7 +62,6 @@ label
     font-size: 15px;
     margin-right: 5px;
 }
-
 .form-input
 {
     width:100%;
@@ -105,12 +97,38 @@ label
     background-color: rgb(13, 127, 235);
 }
 
-
 .btn_danger input,button
 {
     background-color: rgba(255, 38, 0, 0.829);
 }
+#search_result
+{
+    position: absolute;
+}
+#search_result a h5
+{
+    color: black;
+}
+.search_result
+{
+    margin-left: 665px;
+    width: 470px;
+    height: auto;
+    background-color: white;
+    border: 1px solid;
+    display: none;
+    z-index: 10;
+}
 
+.search_result a
+{
+    color: blue;
+}
+
+.search_res_pnl
+{
+    padding:10px;
+}
 
 
 input, select, textarea,button
@@ -130,6 +148,10 @@ input, select, textarea,button
 .text_dark
 {
     color: black;
+}
+.text_grey
+{
+    color: rgb(139, 136, 136);
 }
 .text_angel
 {
@@ -199,4 +221,76 @@ input, select, textarea,button
 ::-webkit-scrollbar-thumb{
     background:#777779;
     border-radius: 4px;
+}
+#add_block_btn_id
+{
+    display: inline-flex;
+    margin-top: 10px;
+}
+#add_block_btn_id >div
+{
+    padding-right: 10px;
+}
+.friend_request
+{
+    margin-left: 1080px;
+    width: 500px;
+    height: auto;
+    background-color: white;
+    border: 1px solid;
+    z-index: 11;
+}
+#friend_request
+{
+    position: absolute;
+    display: none;
+}
+#friend_request a
+{
+    color: black;
+}
+#friend_request h5
+{
+    padding-left:10px;
+    padding-top: 20px;
+    padding-bottom: 10px;   
+}
+#likes_list_panel
+{
+    width: 600px;
+    height: 600px;
+    overflow-y: scroll;
+    background-color: rgb(240, 236, 230);
+    border: 5px solid white;
+    position: fixed;
+    transform: translate(-50%,-50%);
+    left: 50%;
+    top: 50%;
+    z-index: 20;
+    display: none;
+}
+
+#likeby_username
+{
+    width: 90%;
+    word-wrap: wrap;
+}
+#friendListName
+{
+    margin-top: 7px;
+    margin-left: 10px;
+}
+.friendListPanel
+{
+    width: 300px;
+    height: 100px;
+}
+#friendListPanel_id
+{
+    display: inline-flex;
+}
+.loadFriendListPanel
+{
+    width: 1300px;
+    margin-top: 20px;
 }

@@ -1,0 +1,57 @@
+table th tr td
+{
+    border: 1px solid;
+}
+table
+{
+    font-family: arial, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+}
+td, th
+{
+    border: 1px solid #dddddd;
+    text-align: left;
+    padding: 8px;
+}
+
+tr:nth-child(even)
+{
+    background-color: #143c94;
+}
+
+th
+{
+    background-color: black;
+}
+.table_wrapper
+{
+    position: relative;
+    top: 5%;
+    width: 88%;
+    left: 5%;
+    position: relative;
+    height: 90%;
+    overflow-x: scroll;
+    overflow-x: scroll;
+}
+#col-2
+{
+    /* position: relative;
+    height: 100%;
+    overflow-x: scroll;
+    overflow-x: hidden; */
+}
+html
+{
+    background-color: black;
+}
+.edit_update_btns
+{
+    margin-top: 10px;
+    
+}
+.update_cancel_btn_container
+{
+    padding-bottom: 10px;
+}

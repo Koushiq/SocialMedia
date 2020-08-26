@@ -24,16 +24,6 @@
             }
             return $conn;
        }
-      /*  public function getConn()
-       {
-           if($conn==NULL)
-           {
-               echo "object is null";
-           }
-           else
-           {
-               echo "object is not null";
-           }
-       } */
+     
    }
 ?>

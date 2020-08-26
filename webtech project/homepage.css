@@ -1,14 +1,13 @@
 #col-1
 {
-    width: 15%;
-    background-color: rgba(212, 209, 209, 0.705);
+    width: 8%;
+    background-color: rgba(212, 209, 209, 0.705);;
     border-right: 0.001rem solid;
 }
-
 #col-2
 {
-    left: 15%;
-    width: 70%;
+    left: 8%;
+    width: 77%;
     background-color: rgba(212, 209, 209, 0.705);
     overflow-y: scroll;
 }

@@ -5,10 +5,24 @@
         session_destroy();
         header("location:login.php");
     }
-    $username=$_SESSION['username'];
-
-    //db connection 
     $conn = new mysqli("localhost", "root", "", "socialsite");
+    function getPhotoId()
+    {
+        global $conn;
+        $photoQuery="select * from photos order by photoid desc";
+        $resultPhoto=$conn->query($photoQuery);
+        $rowPhoto=$resultPhoto->fetch_assoc();
+        $photoId=1;
+        if($resultPhoto->num_rows>0)
+        {
+            $photoId=$rowPhoto['photoId'];
+            $photoId++;
+        }
+        return $photoId;
+    }
+    
+    $username=$_SESSION['username'];
+    
     $sqlUserinfo = "select * from userinfo where username = '".$username."'";
     $sqlAbout = "select * from about where username = '".$username."'";
     $resultUserinfo= $conn->query($sqlUserinfo);
@@ -30,8 +44,7 @@
     $phonenumberErr="";
     $propicErr="";
     $coverpicErr="";
-
-
+   
     if(isset($_POST['update']))
     {
         if(!empty($_POST['firstName']))
@@ -89,7 +102,6 @@
                     $educationErr="numbers and special chars not allowed";
                     $updateValidation=false;
                 }
-               
             }
         }
         else
@@ -146,60 +158,80 @@
 
        if(!empty($_FILES['propic']['name']))
        {
-            $propic='propic/'.$username.'.jpg';
-            $handle = $_FILES["propic"]["tmp_name"];
-            copy($handle, $propic);
+            $ext = pathinfo($_FILES['propic']['name'], PATHINFO_EXTENSION);
+            if($ext=="jpg" || $ext=="PNG" || $ext=="gif"  || $ext=="tiff"  || $ext=="BMP")
+            {
+                $propic='propic/'.$username."-".getPhotoId().'.jpg';
+                $handle = $_FILES["propic"]["tmp_name"];
+                $sqlInsertPhoto = "insert into photos (username,path,type) values ('".$_SESSION['username']."','".$propic."','propic')";
+                $conn->query($sqlInsertPhoto);
+                copy($handle, $propic);
+            }
+            else
+            {
+                $propic=$rowAbout['propic'];
+                $propicErr="Wrong file format !";
+                $updateValidation=false;
+            }
+            
        }
        else
        {
-             $propic=$rowAbout['propic'];
+            $propic=$rowAbout['propic'];
        }
        if(!empty($_FILES['coverpic']['name']))
        {
-            $coverpic='coverpic/'.$username.'.jpg';
-            $handle = $_FILES["coverpic"]["tmp_name"];
-            copy($handle, $coverpic);
+            $ext = pathinfo($_FILES['coverpic']['name'], PATHINFO_EXTENSION);
+            if($ext=="jpg" || $ext=="PNG" || $ext=="gif"  || $ext=="tiff"  || $ext=="BMP")
+            {
+                $coverpic='coverpic/'.$username."-".getPhotoId().'.jpg';
+                $handle = $_FILES["coverpic"]["tmp_name"];
+                $sqlInsertPhoto = "insert into photos (username,path,type) values ('".$_SESSION['username']."','".$coverpic."','coverpic')";
+                $conn->query($sqlInsertPhoto);
+                copy($handle, $coverpic);
+            }
+            else
+            {
+                $coverpic=$rowAbout['coverpic'];
+                $propicErr="Wrong file format !";
+                $updateValidation=false;
+            }
+            
        }
        else
        {
             $coverpic=$rowAbout['coverpic'];
        }
-
        $sqlUserinfoUpdate = "update userinfo set firstname='".$firstName."' ,lastname='".$lastName."'  where username='".$username."' ;";
        $sqlAboutUpdate = "update about set education='".$education."' ,subject='".$subject."' , phonenumber='".$phonenumber."' ,  propic='".$propic."',  coverpic='".$coverpic."' where username='".$username."' ;";
+       
        if($updateValidation==true)
        {
-           /* if ($conn->query($sqlUserinfoUpdate); === TRUE)
-            {
-                echo "<script> alert('account updated');  </script>";
-            }
-            else 
-            {
-                die($conn->error);
-            }
-    
-            if ($conn->query($sqlAboutUpdate) === TRUE)
-            {
-                echo "<script> alert('account updated');  </script>";
-            }
-            else 
-            {
-                die( "Something is wrong!" );
-            }*/
             $conn->query($sqlUserinfoUpdate);
             $conn->query($sqlAboutUpdate);
+            $UpdateFriendTable="select * from friend where username='".$_SESSION['username']."' ";
+            $res=$conn->query($UpdateFriendTable);
+            if($res->num_rows>0)
+            {
+                $updateUsername="update friend set usernameFirstName='".$firstName."',usernameLastName='".$lastName."' , usernamePropic='".$propic."' where username='".$_SESSION['username']."'";
+                $conn->query($updateUsername);
+            }
+
+            $UpdateFriendTable="select * from friend where receivername='".$_SESSION['username']."' ";
+            $res=$conn->query($UpdateFriendTable);
+            if($res->num_rows>0)
+            {
+                $updateUsername="update friend set receivernameFirstName='".$firstName."',receivernameLastName='".$lastName."' , receivernamePropic='".$propic."' where receivername='".$_SESSION['username']."'";
+                $conn->query($updateUsername);
+            }
+
             header("location:about.php");
        }
-      
     }
-
-
-
-
+    header('Cache-Control: no-cache, no-store, must-revalidate');
+    header('Pragma: no-cache');
+    header('Expires: 0');
 ?>
-
-
-
 
 <!DOCTYPE html>
 <html>
@@ -212,31 +244,84 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
     </head>
     <body>
-        <div class="form-input" id="top">
-            <uL class="top_nav">
-                <li class="top_search">
-                    <input type="search" placeholder="Search">
-                </li>
-                <li class="first_element" id="item_upper_space">
-                    <a href="profile.php" class="text_angel">Profile</a>
-                </li>
-                <li id="item_upper_space">
-                    <a href="homepage.php" class="text_angel">Home</a>
-                </li>
-                <li class="logo top_nav_pic" id="item_upper_space">
-                    <a href="#" ><img src="friendRequest.png"></a>
-                </li>
-                <li class="logo top_nav_pic" id="item_upper_space">
-                        <a href="#"><img src="message.png"></a>
-                </li>
-                <li class="logo top_nav_pic" id="item_upper_space">
-                    <a href="#"><img src="notification.png"></a>
-                </li>
-                <li class="logo top_nav_pic" id="item_upper_space">
-                    <a href="logout.php"><img src="logout.png"></a>
-                </li>
-            </uL>
-       </div>
+        <script>
+            function alphaOnly(event,choice) 
+            {
+                var key = event.keyCode;
+                if(choice==1)
+                {
+                    if((key >= 65 && key <= 90) || (key >= 97 && key <= 122)  || key == 8)
+                    {
+                        document.getElementById("firstNameErr").innerHTML="";
+                    }
+                    else
+                    {
+                        document.getElementById("firstNameErr").innerHTML="Only Alphabets Allowed";
+                        document.getElementById("firstName").value="";
+                    }
+                }
+                else if(choice==2)
+                {
+                    if((key >= 65 && key <= 90) || (key >= 97 && key <= 122)  || key == 8)
+                    {
+                        document.getElementById("lastNameErr").innerHTML="";
+                    }
+                    else
+                    {
+                        document.getElementById("lastNameErr").innerHTML="Only Alphabets Allowed";
+                        document.getElementById("lastName").value="";
+                    }
+                }
+                else if(choice==3)
+                {
+                    if((key >= 65 && key <= 90) || (key >= 97 && key <= 122)  || key == 8)
+                    {
+                        document.getElementById("educationErr").innerHTML="";
+                    }
+                    else
+                    {
+                        document.getElementById("educationErr").innerHTML="Only Alphabets Allowed";
+                        document.getElementById("education").value="";
+                    }
+                }
+                else if(choice==4)
+                {
+                    if((key >= 65 && key <= 90) || (key >= 97 && key <= 122)  || key == 8)
+                    {
+                        document.getElementById("subjectErr").innerHTML="";
+                    }
+                    else
+                    {
+                        document.getElementById("subjectErr").innerHTML="Only Alphabets Allowed";
+                        document.getElementById("subject").value="";
+                    }
+                }
+                console.log(key);
+            
+            }
+
+            function numericOnly(event)
+            {
+                var key=event.keyCode;
+
+                if(key>=48 && key<=57)
+                {
+                    document.getElementById("phonenumberErr").innerHTML="";
+                }
+                else
+                {
+                    document.getElementById("phonenumberErr").innerHTML="Only Numeric Allowed";
+                    document.getElementById("phonenumber").value="";
+                }
+            }
+            
+        </script>
+
+
+
+        <?php
+            include("headerfile.php");   
+        ?>
 
        <div class="column center_align" id="col-1">
                
@@ -248,24 +333,9 @@
             <img src="<?php echo $rowAbout['propic']; ?>" class="pro_pic">
             <h1 class="text_angel big_font" id="user_name"> <b> <?php echo $username;?> </b> </h1>
         </div>
-        <div class="profile_btns">
-             <ul>
-                 <li>
-                     <a href="about.php"><p class="med_font text_primary">About</p></a>
-                 </li>
-                 <li>
-                    <a href="profile.php"><p class="med_font text_primary">Profile</p></a>
-                </li>
-                 <li>
-                    <a href="#"><p class="med_font text_primary">Friends</p></a>
-                </li>
-                <li>
-                    <a href="#"><p class="med_font text_primary">Photos</p></a>
-                </li>
-             </ul>
-        </div>
-
-
+        <?php 
+            include("loadProfileBtns.php");
+        ?>
         <form class="user_info_tab" method="post" action="" enctype="multipart/form-data">
             <h3>Edit profile Info</h3>
                 <table class="form-input">
@@ -283,10 +353,10 @@
                             <label>First Name</label>
                         </td>
                         <td>
-                            <input type="text" value= "<?php echo $firstName; ?>" name="firstName">
+                            <input type="text" onkeypress="alphaOnly(event,'1')" id="firstName" value= "<?php echo $firstName; ?>" name="firstName">
                         </td>
                         <td>
-                            <label class="text_error"> <?php echo $firstNameErr; ?> </label>
+                            <label class="text_error" id="firstNameErr"> <?php echo $firstNameErr; ?> </label>
                         </td>
                     </tr>
                  
@@ -295,10 +365,10 @@
                             <label>Last Name :</label>
                         </td>
                         <td>
-                            <input type="text" value="<?php echo $lastName; ?>" name="lastName">
+                            <input type="text" id="lastName" onkeypress="alphaOnly(event,'2')" value="<?php echo $lastName; ?>" name="lastName">
                         </td>
                         <td>
-                            <label class="text_error"> <?php echo $lastNameErr; ?> </label>
+                            <label class="text_error" id="lastNameErr"> <?php echo $lastNameErr; ?> </label>
                         </td>
                     </tr>
                     <tr> 
@@ -316,10 +386,10 @@
                         </td>
 
                         <td>
-                            <input type="text" value="<?php echo $education; ?>" name="education">
+                            <input type="text" id="education" onkeypress="alphaOnly(event,'3')"  value="<?php echo $education; ?>" name="education">
                         </td>
                         <td>
-                            <label class="text_error"> <?php echo $educationErr ?> </label>
+                            <label class="text_error" id="educationErr"> <?php echo $educationErr; ?> </label>
                         </td>
                     </tr>
 
@@ -328,10 +398,10 @@
                             <label>Subject:</label>
                         </td>
                         <td>
-                            <input type="text" value="<?php echo $subject; ?>" name="subject">
+                            <input type="text" onkeypress="alphaOnly(event,'4')"  id="subject" value="<?php echo $subject; ?>" name="subject">
                         </td>
                         <td>
-                            <label class="text_error"> <?php echo $subjectErr ?> </label>
+                            <label class="text_error" id="subjectErr"> <?php echo $subjectErr; ?> </label>
                         </td>
                     </tr>
                     <tr> 
@@ -339,10 +409,10 @@
                             <label>Phone Number:</label>
                         </td>
                         <td>
-                            <input type="text" value="<?php echo $phonenumber; ?>" name="phonenumber">
+                            <input type="text" onkeypress="numericOnly(event)"  id="phonenumber" value="<?php echo $phonenumber; ?>" name="phonenumber">
                         </td>
                         <td>
-                            <label class="text_error"> <?php echo $phonenumberErr ?> </label>
+                            <label class="text_error" id="phonenumberErr"> <?php echo $phonenumberErr; ?> </label>
                         </td>
                     </tr>
 
@@ -351,11 +421,17 @@
                         <td class="logo">
                             <input type="file" accept="image/*" name="propic" enctype="multipart/form-data">
                         </td>
+                        <td>
+                            <label class="text_error" id="propicErr"> <?php echo $propicErr; ?> </label>
+                        </td>
                     </tr>
                     <tr>
                         <td>Cover Photo</td>
                         <td class="logo">
                             <input type="file" accept="image/*" name="coverpic" enctype="multipart/form-data">
+                        </td>
+                        <td>
+                            <label class="text_error" id="coverpicErr"> <?php echo $coverpicErr; ?> </label>
                         </td>
                     </tr>
                     <tr>
@@ -371,73 +447,19 @@
                             </td>
                       </tr>
                     </tr>
-                    
-                    
-
                 </table>
-                
         </form>
-
-
+        
         <div class="extra_space">
-            
-        </div>
-        <div class="extra_space">
-            
         </div>
 
-
+        <div class="extra_space">    
+        </div>
 
     </div>
 
-
     <div class="column" id="col-3">
-        <ul>
-            <li class="logo chat_box" >
-                <img src="1.jpg">
-                <a href="#" class="text_dark">
-                    <p>Carlos</p>   
-                </a> 
-                <span class="active_now al"></span>
-            </li>
-            <li class="logo chat_box" >
-                <img src="2.jpg">
-                <a href="#" class="text_dark">
-                    <p>Nicolas</p>
-                </a>
-                <span class="active_now"></span>
-            </li>
-            <li class="logo chat_box" >
-                <img src="3.jpg">
-                <a href="#" class="text_dark">
-                    <p>Leoid</p>
-                </a> 
-                <span class="active_now"></span>
-            </li>
-            <li class="logo chat_box" >
-                <img src="4.jpg">
-                <a href="#" class="text_dark">
-                    <p>Alex</p>
-                </a> 
-                <span class="active_now"></span>
-            </li>
-            <li class="logo chat_box" >
-                <img src="6.jpg">
-                <a href="#" class="text_dark">
-                    <p>Maria</p>
-                </a>
-                <span class="not_now"></span>
-            </li>
-        </ul>
+       <?php  include("loadChatList.php"); ?>
     </div>  
-
-
-
     </body>
 </html>
-
-
-
-<!--<ul class="user_info_list form-input ">
-                   
-                </ul>-->

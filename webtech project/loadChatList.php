@@ -1,22 +1,44 @@
 
 <ul>
     <?php
-        $sql="select userinfo.username,userinfo.firstName,userinfo.lastName, about.propic from userinfo inner join about on userinfo.username=about.username";
+        $conn=new mysqli("localhost","root","","socialsite");
+        //$sqlFriendRequest="select * from friend where (username='".$_SESSION['username']."' or receivername='".$_SESSION['username']."') and status ='accepted' ;";
+        $sql="select * from friend where (username='".$_SESSION['username']."' or receivername='".$_SESSION['username']."') and status ='accepted' ;";
         $result= $conn->query($sql);
-        //$row = $result->fetch_assoc();
+        
         while( $row = $result->fetch_assoc() )
         {
-            echo
+            if($row['username']!=$_SESSION['username'])
+            {
+                echo
                 '
-                <a href="?username='.$row['username'].' " class="text_dark" >
-                <li class="logo chat_box">
-                
-                <img src="'.$row['propic'].'">
-                <p id="chat_head_panel">'.$row['firstName']." ".$row['lastName'].'</p>
-                
-                <span class="active_now"></span>
-                 </li> 
-                 </a>';
-        }        
+                    <a href="messenger.php?username='.$row['username'].' " class="text_dark" >
+                    <li class="logo chat_box">
+                    
+                    <img src="'.$row['usernamePropic'].'">
+                    <p id="chat_head_panel">'.$row['usernameFirstName']." ".$row['usernameLastName'].'</p>
+                    
+                    <span class="active_now"></span>
+                    </li> 
+                    </a>
+                ';
+            }
+            else
+            {
+                echo
+                '
+                    <a href="messenger.php?username='.$row['receivername'].' " class="text_dark" >
+                    <li class="logo chat_box">
+                    
+                    <img src="'.$row['receivernamePropic'].'">
+                    <p id="chat_head_panel">'.$row['receivernameFirstName']." ".$row['receivernameLastName'].'</p>
+                    
+                    <span class="active_now"></span>
+                    </li> 
+                    </a>
+                ';
+            }
+            
+        }
      ?>    
 </ul>
